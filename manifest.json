@@ -1,0 +1,39 @@
+{
+  "manifest_version": 2,
+  "name": "autoniduu",
+  "version": "1.0",
+  "permissions": ["webRequest", "webRequestBlocking", "storage", "<all_urls>"],
+  "description": "Extensão para responder automaticamente testes do Niduu.",
+  "icons": {
+    "48": "icons/dark/logo48.png",
+    "96": "icons/dark/logo96.png"
+  },
+  "browser_action": {
+    "default_title": "Responder",
+    "default_icon": {
+      "48": "icons/dark/logo48.png",
+      "96": "icons/dark/logo96.png"
+    },
+    "theme_icons": [
+      {
+        "light": "icons/light/logo48.png",
+        "dark": "icons/dark/logo48.png",
+        "size": 48
+      },
+      {
+        "light": "icons/light/logo96.png",
+        "dark": "icons/dark/logo96.png",
+        "size": 96
+      }
+    ]
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://niduu.com/web/lesson/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
