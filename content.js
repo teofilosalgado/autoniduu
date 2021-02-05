@@ -14,14 +14,18 @@ function onClicked() {
 
     const params = new URLSearchParams(window.location.search);
     const enrollment = `enrollment_${params.get("enrollmentId")}`;
+    const lesson = `lesson_${params.get("courseId")}`;
+    const regex = new RegExp(`^${lesson}.*${enrollment}$`, "gm");
 
     const storage = window.localStorage;
-    const key = Object.keys(storage).filter((k) => k.endsWith(enrollment))[0];
+    const key = Object.keys(storage).filter((k) => k.match(regex))[0];
     const value = JSON.parse(storage[key]);
 
-    const choosen = value.cards.filter((card) => {
+    // TODO Use current card type instead of contentBox matching.
+    const current = value.cards.filter((card) => {
       if (card.alternatives?.length) {
-        const paragraphs = card.content[0].contentBox.map(
+        const element = card.content.filter((item) => item.contentBox);
+        const paragraphs = element[0].contentBox.map(
           (content) => content.paragraph
         );
         return paragraphs.every((element) => description.includes(element));
@@ -29,12 +33,11 @@ function onClicked() {
         return false;
       }
     })[0];
-
-    const isDraggable = choosen.alternatives.every((item) => item.value > 0);
+    const isDraggable = current.alternatives.every((item) => item.value > 0);
 
     if (isDraggable) {
-      choosen.alternatives.forEach((alternative) => {
-        const boxXpath = `//p[text()='${alternative.description}']`;
+      current.alternatives.forEach((alternative) => {
+        const boxXpath = `//*[text()='${alternative.description}']`;
         const boxMatchingElement = document.evaluate(
           boxXpath,
           document,
@@ -47,7 +50,7 @@ function onClicked() {
         }
       });
     } else {
-      const alternatives = choosen.alternatives.filter(
+      const alternatives = current.alternatives.filter(
         (item) => item.value === 1
       );
       alternatives.forEach((alternative) => {

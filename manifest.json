@@ -32,7 +32,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://niduu.com/web/lesson/*"],
+      "matches": ["*://*/*"],
       "js": ["content.js"]
     }
   ]
