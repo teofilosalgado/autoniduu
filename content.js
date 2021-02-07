@@ -14,7 +14,7 @@ function onClicked() {
 
     const params = new URLSearchParams(window.location.search);
     const enrollment = `enrollment_${params.get("enrollmentId")}`;
-    const lesson = `lesson_${params.get("courseId")}`;
+    const lesson = `lesson_${window.location.pathname.split("/").pop()}`;
     const regex = new RegExp(`^${lesson}.*${enrollment}$`, "gm");
 
     const storage = window.localStorage;
