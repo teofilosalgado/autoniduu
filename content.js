@@ -33,7 +33,14 @@ function onClicked() {
         return false;
       }
     })[0];
-    const isDraggable = current.alternatives.every((item) => item.value > 0);
+
+    const values = current.alternatives.map((item) => item.value);
+    const isDraggable =
+      current.alternatives.every((item) => item.value > 0) &&
+      !values.filter((item, index) => values.indexOf(item) != index);
+
+    console.log(values);
+    console.log(isDraggable);
 
     if (isDraggable) {
       current.alternatives.forEach((alternative) => {
